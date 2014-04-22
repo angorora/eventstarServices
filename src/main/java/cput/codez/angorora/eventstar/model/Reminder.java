@@ -7,6 +7,8 @@ package cput.codez.angorora.eventstar.model;
 
 import java.util.Calendar;
 import javax.persistence.Embeddable;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -16,12 +18,13 @@ import javax.persistence.Embeddable;
 public class Reminder {
 
     private String message;
+    @Temporal(TemporalType.TIMESTAMP)
     private Calendar activeDate;
 
-    public Reminder() {
+    private Reminder() {
     }
 
-    public Reminder(Builder build) {
+   private Reminder(Builder build) {
         this.activeDate = build.activeDate;
         this.message = build.message;
     }

@@ -20,7 +20,6 @@ public class Room implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
     private String roomName;
     private long capacity;
 
