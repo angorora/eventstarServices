@@ -7,6 +7,7 @@ package cput.codez.angorora.eventstar.model;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,6 +15,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 /**
  *
@@ -26,14 +28,15 @@ public class Attendee implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long attendeeId;
+    private long eventId;
     private String firstName;
     private String lastName;
     private String gender;
     @Embedded
     private Contact contact;
-    @OneToMany
-    @JoinColumn(name = "attendeeId")
-    private List<Payment> pay;
+    @OneToOne(cascade=CascadeType.ALL)
+    @JoinColumn(name = "attendeeId" )
+    private Payment pay;
     private int age;
     private String companyName;
     private String diet;
@@ -46,10 +49,10 @@ public class Attendee implements Serializable {
         this.attendeeId = attendeeId;
     }
 
-    public Attendee() {
+    private Attendee() {
     }
 
-    public Attendee(Builder build) {
+    private Attendee(Builder build) {
         this.contact = build.contact;
         this.firstName = build.firstName;
         this.lastName = build.lastName;
@@ -58,10 +61,19 @@ public class Attendee implements Serializable {
         this.pay = build.pay;
         this.diet = build.diet;
         this.age = build.age;
+        this.eventId=build.eventId;
     }
 
     public Long getAttendeeId() {
         return attendeeId;
+    }
+
+    public long getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(long eventId) {
+        this.eventId = eventId;
     }
 
     public void setAttendeeId(Long attendeeId) {
@@ -100,11 +112,11 @@ public class Attendee implements Serializable {
         this.contact = contact;
     }
 
-    public List<Payment> getPay() {
+    public Payment getPay() {
         return pay;
     }
 
-    public void setPay(List<Payment> pay) {
+    public void setPay(Payment pay) {
         this.pay = pay;
     }
 
@@ -135,6 +147,7 @@ public class Attendee implements Serializable {
     public static class Builder {
 
         private Long attendeeId;
+        private long eventId;
         private String firstName;
         private String lastName;
         private String gender;
@@ -142,7 +155,7 @@ public class Attendee implements Serializable {
         private Contact contact;
         @OneToMany
         @JoinColumn(name = "attendeeId")
-        private List<Payment> pay;
+        private Payment pay;
         private int age;
         private String companyName;
         private String diet;
@@ -165,7 +178,10 @@ public class Attendee implements Serializable {
             this.lastName = lname;
             return this;
         }
-
+        public Builder eventId(long evId){
+            this.eventId=evId;
+            return this;
+        }
         public Builder gender(String gender) {
             this.gender = gender;
             return this;
@@ -181,7 +197,7 @@ public class Attendee implements Serializable {
             return this;
         }
 
-        public Builder pay(List<Payment> pay) {
+        public Builder pay(Payment pay) {
             this.pay = pay;
             return this;
         }
@@ -204,6 +220,7 @@ public class Attendee implements Serializable {
             this.firstName = att.firstName;
             this.gender = att.gender;
             this.pay = att.pay;
+            this.eventId=att.eventId;
             return this;
         }
     }

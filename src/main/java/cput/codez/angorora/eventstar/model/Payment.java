@@ -22,16 +22,16 @@ public class Payment implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long paymentId;
-    private String status;
-    private double balance;
+    private long attendeeId;
+    private double amount;
 
     public Payment() {
     }
 
     public Payment(Builder build) {
-        this.balance = build.balance;
+        this.amount = build.amount;
         this.paymentId = build.paymentId;
-        this.status = build.status;
+        this.attendeeId = build.attendeeId;
     }
 
     public Long getPaymentId() {
@@ -42,39 +42,43 @@ public class Payment implements Serializable {
         this.paymentId = paymentId;
     }
 
-    public String getStatus() {
-        return status;
+    public double getAttId() {
+        return attendeeId;
     }
 
-    public void setStatus(String status) {
-        this.status = status;
+    public long getAttendeeId() {
+        return attendeeId;
     }
 
-    public double getBalance() {
-        return balance;
+    public void setAttendeeId(long attendeeId) {
+        this.attendeeId = attendeeId;
     }
 
-    public void setBalance(double balance) {
-        this.balance = balance;
+    public double getAmount() {
+        return amount;
     }
 
-    public static class Builder {
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+     public static class Builder {
 
         private Long paymentId;
-        private String status;
-        private double balance;
+        private long attendeeId;
+        private double amount;
 
         public Builder(long paymentId) {
             this.paymentId = paymentId;
         }
 
-        public Builder status(String status) {
-            this.status = status;
+        public Builder attendeeId(long attendeeId) {
+            this.attendeeId = attendeeId;
             return this;
         }
 
-        public Builder balance(double balance) {
-            this.balance = balance;
+        public Builder amount(double amount) {
+            this.amount =amount;
             return this;
         }
 
@@ -83,9 +87,9 @@ public class Payment implements Serializable {
         }
 
         public Builder copier(Payment pay) {
-            this.balance = pay.balance;
+            this.amount = pay.amount;
             this.paymentId = pay.paymentId;
-            this.status = pay.status;
+            this.attendeeId = pay.attendeeId;
             return this;
         }
     }

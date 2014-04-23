@@ -43,11 +43,17 @@ public class Event implements Serializable {
     @OneToMany
     @JoinColumn(name = "eventId")
     List<Supplier> supplier;
+    @OneToMany
+    @JoinColumn(name="eventId")
+    private List<GuestOfHonour> guestOfHonour;
+    @OneToOne
+    @JoinColumn(name="eventId")
+    private Statistics stats;
 
-    public Event() {
+    private Event() {
     }
 
-    public Event(Builder build) {
+    private Event(Builder build) {
         this.att = build.att;
         this.endDate = build.endDate;
         this.startDate = build.startDate;
@@ -59,6 +65,25 @@ public class Event implements Serializable {
         this.supplier = build.supplier;
         this.staff = build.staff;
         this.eventId = build.eventId;
+        this.guestOfHonour=build.guestOfHonour;
+        this.stats=build.stats;
+        
+    }
+
+    public Statistics getStats() {
+        return stats;
+    }
+
+    public void setStats(Statistics stats) {
+        this.stats = stats;
+    }
+
+    public List<GuestOfHonour> getGuestOfHonour() {
+        return guestOfHonour;
+    }
+
+    public void setGuestOfHonour(List<GuestOfHonour> guestOfHonour) {
+        this.guestOfHonour = guestOfHonour;
     }
 
     public Long getEventId() {
@@ -168,7 +193,9 @@ public class Event implements Serializable {
         @OneToMany
         @JoinColumn(name = "eventId")
         List<Supplier> supplier;
-
+        private List<GuestOfHonour> guestOfHonour;
+        private Statistics stats;
+        
         public Builder(String eventName) {
             this.eventName = eventName;
         }
@@ -222,7 +249,14 @@ public class Event implements Serializable {
             this.supplier = sup;
             return this;
         }
-
+        public Builder guestOfHonour(List<GuestOfHonour> guest){
+            this.guestOfHonour=guest;
+            return this;
+        }
+        public Builder stats(Statistics stats){
+            this.stats=stats;
+            return this;
+        }
         public Event build() {
             return new Event(this);
         }
@@ -239,6 +273,8 @@ public class Event implements Serializable {
             this.supplier = ev.supplier;
             this.staff = ev.staff;
             this.eventId = ev.eventId;
+            this.guestOfHonour=ev.guestOfHonour;
+            this.stats=ev.stats;
             return this;
 
         }
