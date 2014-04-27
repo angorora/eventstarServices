@@ -6,6 +6,7 @@
 package cput.codez.angorora.eventstar.model;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,64 +23,45 @@ public class Payment implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long paymentId;
-    private long attendeeId;
     private double amount;
 
-    public Payment() {
+    private Payment() {
     }
 
-    public Payment(Builder build) {
+    private Payment(Builder build) {
         this.amount = build.amount;
         this.paymentId = build.paymentId;
-        this.attendeeId = build.attendeeId;
     }
 
     public Long getPaymentId() {
         return paymentId;
     }
 
-    public void setPaymentId(Long paymentId) {
-        this.paymentId = paymentId;
-    }
+ 
 
-    public double getAttId() {
-        return attendeeId;
-    }
-
-    public long getAttendeeId() {
-        return attendeeId;
-    }
-
-    public void setAttendeeId(long attendeeId) {
-        this.attendeeId = attendeeId;
-    }
+  
 
     public double getAmount() {
         return amount;
     }
 
-    public void setAmount(double amount) {
-        this.amount = amount;
-    }
+    
 
      public static class Builder {
 
         private Long paymentId;
-        private long attendeeId;
+     
         private double amount;
 
-        public Builder(long paymentId) {
+      
+        public Builder paymentId(long paymentId) {
             this.paymentId = paymentId;
-        }
-
-        public Builder attendeeId(long attendeeId) {
-            this.attendeeId = attendeeId;
             return this;
         }
 
-        public Builder amount(double amount) {
+        public Builder (double amount) {
             this.amount =amount;
-            return this;
+          
         }
 
         public Payment build() {
@@ -89,7 +71,6 @@ public class Payment implements Serializable {
         public Builder copier(Payment pay) {
             this.amount = pay.amount;
             this.paymentId = pay.paymentId;
-            this.attendeeId = pay.attendeeId;
             return this;
         }
     }

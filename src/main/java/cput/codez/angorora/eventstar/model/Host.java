@@ -26,40 +26,23 @@ public class Host implements Serializable {
     private String hostName;
     @Embedded
     private Contact contact;
-    private long eventId;
-
     private Host() {
     }
 
-   private Host(Builder build) {
+    private Host(Builder build) {
         this.hostName = build.hostName;
         this.id = build.id;
         this.contact = build.contact;
-        this.eventId=build.eventId;
+      
     }
 
-    public long getEventId() {
-        return eventId;
-    }
-
-    public void setEventId(long eventId) {
-        this.eventId = eventId;
-    }
-
+   
     public String getHostName() {
         return hostName;
     }
 
-    public void setHostName(String hostName) {
-        this.hostName = hostName;
-    }
-
     public Contact getContact() {
         return contact;
-    }
-
-    public void setContact(Contact contact) {
-        this.contact = contact;
     }
 
     public static class Builder {
@@ -68,25 +51,22 @@ public class Host implements Serializable {
         private String hostName;
         @Embedded
         private Contact contact;
-        private long eventId;
-        public Builder(long id) {
-            this.id = id;
-        }
+       
 
-        public Builder host(String hostName) {
+        public Builder(String hostName) {
             this.hostName = hostName;
-            return this;
         }
 
         public Builder contact(Contact cont) {
             this.contact = cont;
             return this;
         }
-        
-        public Builder eventId(long eventId) {
-            this.eventId = eventId;
+
+        public Builder id(long id) {
+            this.id = id;
             return this;
         }
+
         public Host build() {
             return new Host(this);
         }
@@ -95,7 +75,6 @@ public class Host implements Serializable {
             this.hostName = host.hostName;
             this.id = host.id;
             this.contact = host.contact;
-            this.eventId = host.eventId;
             return this;
         }
     }

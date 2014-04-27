@@ -6,6 +6,8 @@
 
 package cput.codez.angorora.test.model;
 
+import cput.codez.angorora.eventstar.model.GuestOfHonour;
+import org.testng.Assert;
 import static org.testng.Assert.*;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
@@ -17,20 +19,27 @@ import org.testng.annotations.Test;
  *
  * @author marc
  */
-public class Attendee {
-    private Attendee att;
-    private Attendee newAttendee;
-    public Attendee() {
+public class GuestOfHonourTest {
+    private GuestOfHonour guest;
+    private GuestOfHonour newGuest;
+    public GuestOfHonourTest() {
     }
 
     // TODO add test methods here.
     // The methods must be annotated with annotation @Test. For example:
     //
      @Test
-    public void testCreation() {
-     
-    }
-
+     public void testCreation() {
+         guest= new GuestOfHonour.Builder("Dr B")
+                .surname("Kabaso")
+                 .guestInfo("Graduated with 10 Cum Laudes in all his 10 degrees").build();
+         Assert.assertEquals(guest.getGuestName(), "Dr B");
+     }
+@Test
+public void testUpdate(){
+    newGuest = new GuestOfHonour.Builder("Dr B").copier(guest).surname("com.Kabaso").build();
+         Assert.assertEquals(newGuest.getGuestSurname(), "com.Kabaso");
+}
     @BeforeClass
     public static void setUpClass() throws Exception {
     }
@@ -45,11 +54,5 @@ public class Attendee {
 
     @AfterMethod
     public void tearDownMethod() throws Exception {
-    }
-
-    private static class Builder {
-
-        public Builder(String string) {
-        }
     }
 }

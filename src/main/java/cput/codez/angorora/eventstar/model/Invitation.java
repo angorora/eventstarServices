@@ -7,6 +7,8 @@ package cput.codez.angorora.eventstar.model;
 
 import java.util.Calendar;
 import javax.persistence.Embeddable;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 /**
  *
@@ -16,12 +18,13 @@ import javax.persistence.Embeddable;
 public class Invitation {
 
     private String invitation;
+    @Temporal(TemporalType.TIMESTAMP)
     private Calendar issueDate;
 
-    public Invitation() {
+    private Invitation() {
     }
 
-    public Invitation(Builder build) {
+    private Invitation(Builder build) {
         this.invitation = build.invitation;
         this.issueDate = build.issueDate;
     }
@@ -52,8 +55,8 @@ public class Invitation {
 
         }
 
-        public Builder isssueDate(Calendar issuedate) {
-            this.issueDate = issueDate;
+        public Builder issueDate(Calendar issuedate) {
+            this.issueDate = issuedate;
             return this;
         }
 

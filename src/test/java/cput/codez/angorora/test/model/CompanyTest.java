@@ -5,7 +5,9 @@
  */
 
 package cput.codez.angorora.test.model;
-import cput.codez.angorora.eventstar.model.User;
+
+import cput.codez.angorora.eventstar.model.Company;
+import cput.codez.angorora.eventstar.model.Contact;
 import org.testng.Assert;
 import static org.testng.Assert.*;
 import org.testng.annotations.AfterClass;
@@ -18,25 +20,32 @@ import org.testng.annotations.Test;
  *
  * @author marc
  */
-public class UserTest {
-    private User user;
-    private User newuser;
-    public UserTest() {
+public class CompanyTest {
+    private Company company;
+    private Company newCompany;
+    private Contact contact;
+    public CompanyTest() {
     }
 
     // TODO add test methods here.
     // The methods must be annotated with annotation @Test. For example:
     //
      @Test
-     public void testCreate() {
-            user= new User.Builder("Allen").userpass("34341991").userId(212199587).build();
-            Assert.assertEquals(user.getUsername(), "Allen");
+     public void testCreation() {
+        contact=new Contact.Builder("0840472266")
+                .email("allen.ngorora@gmail.com")
+                .telno("0800965774")
+                .webaddress("info@Microsoft")
+                .build();
+         company= new Company.Builder("Microsoft")
+                 .contact(null)
+                 .build();
+         Assert.assertEquals(company.getCompanyName(),"Microsoft");
      }
-     @Test(dependsOnMethods = "testCreate")
-     public void testUpdate(){
-           newuser= new User.Builder("Allen").copier(user).userpass("34321991").build();
-           Assert.assertEquals(newuser.getPassword(), "34321991");
-     }
+@Test
+public void testUpdate(){
+   //cant update this object directly
+}
     @BeforeClass
     public static void setUpClass() throws Exception {
     }
@@ -52,7 +61,4 @@ public class UserTest {
     @AfterMethod
     public void tearDownMethod() throws Exception {
     }
-
-    
-    
 }

@@ -6,6 +6,7 @@
 package cput.codez.angorora.eventstar.model;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -23,14 +24,15 @@ public class Company implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    @Column(unique=true)
     private String companyName;
     @Embedded
     private Contact contact;
 
-    public Company() {
+    private Company() {
     }
 
-    public Company(Builder build) {
+    private Company(Builder build) {
         this.companyName = build.companyName;
         this.contact = build.contact;
         this.id = build.id;
@@ -40,24 +42,12 @@ public class Company implements Serializable {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     public String getCompanyName() {
         return companyName;
     }
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
-    }
-
     public Contact getContact() {
         return contact;
-    }
-
-    public void setContact(Contact contact) {
-        this.contact = contact;
     }
 
     public static class Builder {

@@ -28,7 +28,6 @@ public class GuestOfHonour implements Serializable {
     private String guestInfo;
     @Embedded
     private Contact contact;
-    private long eventId;
     private GuestOfHonour() {
 
     }
@@ -38,48 +37,22 @@ public class GuestOfHonour implements Serializable {
         this.guestInfo = build.guestInfo;
         this.guestName = build.guestName;
         this.guestSurname = build.guestSurname;
-        this.eventId=build.eventId;
         this.id = build.id;
     }
-
-    public long getEventId() {
-        return eventId;
-    }
-
-    public void setEventId(long eventId) {
-        this.eventId = eventId;
-    }
-
-    public String getGuestName() {
+  public String getGuestName() {
         return guestName;
-    }
-
-    public void setGuestName(String guestName) {
-        this.guestName = guestName;
     }
 
     public String getGuestSurname() {
         return guestSurname;
     }
 
-    public void setGuestSurname(String guestSurname) {
-        this.guestSurname = guestSurname;
-    }
-
     public String getGuestInfo() {
         return guestInfo;
     }
 
-    public void setGuestInfo(String guestInfo) {
-        this.guestInfo = guestInfo;
-    }
-
     public Contact getContact() {
         return contact;
-    }
-
-    public void setContact(Contact contact) {
-        this.contact = contact;
     }
 
     public static class Builder {
@@ -90,8 +63,6 @@ public class GuestOfHonour implements Serializable {
         private String guestInfo;
         @Embedded
         private Contact contact;
-        private long eventId;
-
         public Builder(String guestname) {
             this.guestName = guestname;
         }
@@ -115,10 +86,6 @@ public class GuestOfHonour implements Serializable {
             this.contact = cont;
             return this;
         }
-        public Builder eventId(long eventId){
-            this.eventId=eventId;
-            return this;
-        }
         public GuestOfHonour build() {
             return new GuestOfHonour(this);
         }
@@ -129,7 +96,6 @@ public class GuestOfHonour implements Serializable {
             this.guestSurname = guest.guestSurname;
             this.contact = guest.contact;
             this.guestInfo = guest.guestInfo;
-            this.eventId=guest.eventId;
             return this;
         }
     }

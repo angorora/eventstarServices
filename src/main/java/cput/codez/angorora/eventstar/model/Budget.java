@@ -22,7 +22,6 @@ public class Budget implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private long eventId;
     private double venueCost;
     private double marketingCost;
     private double foodCost;
@@ -34,13 +33,12 @@ public class Budget implements Serializable {
     private double speakerCosts;
     private double transportCost;
 
-    public Budget() {
+    private Budget() {
     }
 
-    public Budget(Builder build) {
+    private Budget(Builder build) {
         this.audioVisualCost = build.audioVisualCost;
         this.decorCost = build.decorCost;
-        this.eventId = build.eventId;
         this.id = build.id;
         this.foodCost = build.foodCost;
         this.marketingCost = build.marketingCost;
@@ -52,10 +50,53 @@ public class Budget implements Serializable {
         this.transportCost = build.transportCost;
     }
 
+    public static long getSerialVersionUID() {
+        return serialVersionUID;
+    }
+
+  public double getVenueCost() {
+        return venueCost;
+    }
+
+    public double getMarketingCost() {
+        return marketingCost;
+    }
+
+    public double getFoodCost() {
+        return foodCost;
+    }
+
+    public double getAudioVisualCost() {
+        return audioVisualCost;
+    }
+
+    public double getStaffCost() {
+        return staffCost;
+    }
+
+    public double getPhotographyCost() {
+        return photographyCost;
+    }
+
+    public double getDecorCost() {
+        return decorCost;
+    }
+
+    public double getSecurityCost() {
+        return securityCost;
+    }
+
+    public double getSpeakerCosts() {
+        return speakerCosts;
+    }
+
+    public double getTransportCost() {
+        return transportCost;
+    }
+
     public static class Builder {
 
         private Long id;
-        private long eventId;
         private double venueCost;
         private double marketingCost;
         private double foodCost;
@@ -67,20 +108,14 @@ public class Budget implements Serializable {
         private double speakerCosts;
         private double transportCost;
 
-        public Builder(long eventId) {
-            this.eventId = eventId;
+        
+        public Builder(double venueCost) {
+            this.venueCost = venueCost;
         }
-
         public Builder id(long id) {
             this.id = id;
             return this;
         }
-
-        public Builder venueCost(double venueCost) {
-            this.venueCost = venueCost;
-            return this;
-        }
-
         public Builder marketingCost(double marketCost) {
             this.marketingCost = marketCost;
             return this;
@@ -133,7 +168,6 @@ public class Budget implements Serializable {
         public Builder copier(Budget budget) {
             this.audioVisualCost = budget.audioVisualCost;
             this.decorCost = budget.decorCost;
-            this.eventId = budget.eventId;
             this.id = budget.id;
             this.foodCost = budget.foodCost;
             this.marketingCost = budget.marketingCost;

@@ -20,79 +20,53 @@ public class Statistics implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+   @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private long eventId;
     private long numOfAttendees;
     private long maleAttendees;
     private long femaleAttendees;
     private int rating;
 
-    public Statistics() {
+    private Statistics() {
     }
 
-    public Statistics(Builder build) {
-        this.eventId = build.eventId;
-        this.femaleAttendees = build.femaleAttendees;
+    private Statistics(Builder build) {
+       this.femaleAttendees = build.femaleAttendees;
         this.id = build.id;
         this.maleAttendees = build.maleAttendees;
         this.numOfAttendees = build.numOfAttendees;
         this.rating = build.rating;
     }
 
-    public long getEventId() {
-        return eventId;
-    }
-
-    public void setEventId(long eventId) {
-        this.eventId = eventId;
-    }
-
     public long getNumOfAttendees() {
         return numOfAttendees;
-    }
-
-    public void setNumOfAttendees(long numOfAttendees) {
-        this.numOfAttendees = numOfAttendees;
     }
 
     public long getMaleAttendees() {
         return maleAttendees;
     }
 
-    public void setMaleAttendees(long maleAttendees) {
-        this.maleAttendees = maleAttendees;
-    }
-
+ 
     public long getFemaleAttendees() {
         return femaleAttendees;
     }
 
-    public void setFemaleAttendees(long femaleAttendees) {
-        this.femaleAttendees = femaleAttendees;
-    }
+  
 
     public int getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
-        this.rating = rating;
-    }
-
     public static class Builder {
 
         private Long id;
-        private long eventId;
         private long numOfAttendees;
         private long maleAttendees;
         private long femaleAttendees;
         private int rating;
-
-        public Builder(long eventId) {
-            this.eventId = eventId;
+        public Builder (int rating) {
+            this.rating = rating;
         }
-
         public Builder id(long id) {
             this.id = id;
             return this;
@@ -113,17 +87,13 @@ public class Statistics implements Serializable {
             return this;
         }
 
-        public Builder rating(int rating) {
-            this.rating = rating;
-            return this;
-        }
+        
 
         public Statistics build() {
             return new Statistics(this);
         }
 
         public Builder copier(Statistics stats) {
-            this.eventId = stats.eventId;
             this.femaleAttendees = stats.femaleAttendees;
             this.id = stats.id;
             this.maleAttendees = stats.maleAttendees;
@@ -137,11 +107,7 @@ public class Statistics implements Serializable {
         return id;
     }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Override
+       @Override
     public int hashCode() {
         int hash = 0;
         hash += (id != null ? id.hashCode() : 0);

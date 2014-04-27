@@ -20,44 +20,55 @@ public class Room implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
-    private String roomName;
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
     private long capacity;
+    private String roomName;
 
-   private Room() {
+    private Room() {
     }
 
     private Room(Builder build) {
-        this.roomName = build.roomName;
+        this.id = build.id;
         this.capacity = build.capacity;
+        this.roomName=build.roomName;
+    }
+
+    public Long getId() {
+        return id;
     }
 
     public String getRoomName() {
         return roomName;
     }
 
-    public void setRoomName(String roomName) {
-        this.roomName = roomName;
+    public long getRoomId() {
+        return id;
     }
 
     public long getCapacity() {
         return capacity;
     }
 
-    public void setCapacity(long capacity) {
-        this.capacity = capacity;
-    }
+    
 
     public static class Builder {
 
-        private String roomName;
+        private Long id;
         private long capacity;
+        private String roomName;
 
-        public Builder(String room) {
-            this.roomName = room;
+        public Builder(long capacity) {
+            this.capacity = capacity;
         }
 
-        public Builder capacity(long capacity) {
-            this.capacity = capacity;
+        public Builder id(long id) {
+            this.id = id;
+            return this;
+        }
+
+         public Builder roomName(String roomName) {
+            this.roomName = roomName;
             return this;
         }
 
@@ -66,35 +77,29 @@ public class Room implements Serializable {
         }
 
         public Builder copier(Room room) {
-            this.roomName = room.roomName;
+            this.id = room.id;
             this.capacity = room.capacity;
+            this.roomName=room.roomName;
             return this;
         }
     }
 
-    public String getId() {
-        return roomName;
-    }
-
-    public void setId(String roomName) {
-        this.roomName = roomName;
-    }
-
+  
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (roomName != null ? roomName.hashCode() : 0);
+        hash += (id != null ? id.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the roomName fields are not set
+        // TODO: Warning - this method won't work in the case the id fields are not set
         if (!(object instanceof Room)) {
             return false;
         }
         Room other = (Room) object;
-        if ((this.roomName == null && other.roomName != null) || (this.roomName != null && !this.roomName.equals(other.roomName))) {
+        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
             return false;
         }
         return true;
@@ -102,7 +107,7 @@ public class Room implements Serializable {
 
     @Override
     public String toString() {
-        return "cput.codez.angorora.eventstar.model.Room[ roomName=" + roomName + " ]";
+        return "cput.codez.angorora.eventstar.model.Room[ id=" + id + " ]";
     }
 
 }

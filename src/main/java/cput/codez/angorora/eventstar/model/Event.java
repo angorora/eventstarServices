@@ -8,6 +8,9 @@ package cput.codez.angorora.eventstar.model;
 import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -27,28 +30,38 @@ public class Event implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long eventId;
+    @Column(unique = true)
     private String eventName;
     private String eventType;
     private Calendar startDate;
     private Calendar endDate;
-    private long hostId;
     private String refundable;
     private double refundRate;
+    private double price;
     @OneToMany
     @JoinColumn(name = "eventId")
     List<Staff> staff;
-    @OneToMany
-    @JoinColumn(name = "eventId")
+    @OneToMany @JoinColumn(name = "eventId")
     List<Attendee> att;
     @OneToMany
     @JoinColumn(name = "eventId")
     List<Supplier> supplier;
-    @OneToMany
-    @JoinColumn(name="eventId")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "eventId")
     private List<GuestOfHonour> guestOfHonour;
     @OneToOne
-    @JoinColumn(name="eventId")
+    @JoinColumn(name = "eventId")
     private Statistics stats;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "eventId")
+    private Host host;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "eventId")
+    private Budget budget;
+    @Embedded
+    private Reminder reminder;
+    @Embedded
+    private Invitation invitation;
 
     private Event() {
     }
@@ -59,119 +72,86 @@ public class Event implements Serializable {
         this.startDate = build.startDate;
         this.eventName = build.eventName;
         this.eventType = build.eventType;
-        this.hostId = build.eventId;
         this.refundRate = build.refundRate;
         this.refundable = build.refundable;
         this.supplier = build.supplier;
         this.staff = build.staff;
         this.eventId = build.eventId;
-        this.guestOfHonour=build.guestOfHonour;
-        this.stats=build.stats;
-        
+        this.guestOfHonour = build.guestOfHonour;
+        this.stats = build.stats;
+        this.host = build.host;
+        this.reminder = build.reminder;
+        this.invitation = build.invitation;
+        this.price = build.price;
+        this.budget = build.budget;
+    }
+
+    public Budget getBudget() {
+        return budget;
+    }
+
+    public Invitation getInvitation() {
+        return invitation;
     }
 
     public Statistics getStats() {
         return stats;
     }
 
-    public void setStats(Statistics stats) {
-        this.stats = stats;
-    }
-
     public List<GuestOfHonour> getGuestOfHonour() {
         return guestOfHonour;
-    }
-
-    public void setGuestOfHonour(List<GuestOfHonour> guestOfHonour) {
-        this.guestOfHonour = guestOfHonour;
     }
 
     public Long getEventId() {
         return eventId;
     }
 
-    public void setEventId(Long eventId) {
-        this.eventId = eventId;
-    }
-
     public String getEventName() {
         return eventName;
     }
 
-    public void setEventName(String eventName) {
-        this.eventName = eventName;
+    public double getPrice() {
+        return price;
+    }
+
+    public Host getHost() {
+        return host;
+    }
+
+    public Reminder getReminder() {
+        return reminder;
     }
 
     public String getEventType() {
         return eventType;
     }
 
-    public void setEventType(String eventType) {
-        this.eventType = eventType;
-    }
-
     public Calendar getStartDate() {
         return startDate;
-    }
-
-    public void setStartDate(Calendar startDate) {
-        this.startDate = startDate;
     }
 
     public Calendar getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Calendar endDate) {
-        this.endDate = endDate;
-    }
-
-    public long getHostId() {
-        return hostId;
-    }
-
-    public void setHostId(long hostId) {
-        this.hostId = hostId;
-    }
-
     public String getRefundable() {
         return refundable;
-    }
-
-    public void setRefundable(String refundable) {
-        this.refundable = refundable;
     }
 
     public double getRefundRate() {
         return refundRate;
     }
 
-    public void setRefundRate(double refundRate) {
-        this.refundRate = refundRate;
-    }
-
     public List<Staff> getStaff() {
         return staff;
-    }
-
-    public void setStaff(List<Staff> staff) {
-        this.staff = staff;
     }
 
     public List<Attendee> getAtt() {
         return att;
     }
 
-    public void setAtt(List<Attendee> att) {
-        this.att = att;
-    }
-
     public List<Supplier> getSupplier() {
         return supplier;
-    }
-
-    public void setSupplier(List<Supplier> supplier) {
-        this.supplier = supplier;
     }
 
     public static class Builder {
@@ -181,23 +161,26 @@ public class Event implements Serializable {
         private String eventType;
         private Calendar startDate;
         private Calendar endDate;
-        private long hostId;
         private String refundable;
         private double refundRate;
-        @OneToMany
-        @JoinColumn(name = "eventId")
         List<Staff> staff;
-        @OneToMany
-        @JoinColumn(name = "eventId")
         List<Attendee> att;
-        @OneToMany
-        @JoinColumn(name = "eventId")
         List<Supplier> supplier;
         private List<GuestOfHonour> guestOfHonour;
         private Statistics stats;
-        
+        private Reminder reminder;
+        private Host host;
+        private Invitation invitation;
+        private Budget budget;
+        private double price;
+
         public Builder(String eventName) {
             this.eventName = eventName;
+        }
+
+        public Builder budget(Budget budget) {
+            this.budget = budget;
+            return this;
         }
 
         public Builder eventId(long eventId) {
@@ -210,6 +193,26 @@ public class Event implements Serializable {
             return this;
         }
 
+        public Builder host(Host host) {
+            this.host = host;
+            return this;
+        }
+
+        public Builder price(double price) {
+            this.price = price;
+            return this;
+        }
+
+        public Builder reminder(Reminder remind) {
+            this.reminder = remind;
+            return this;
+        }
+
+        public Builder invitation(Invitation invitation) {
+            this.invitation = invitation;
+            return this;
+        }
+
         public Builder startDate(Calendar start) {
             this.startDate = start;
             return this;
@@ -217,11 +220,6 @@ public class Event implements Serializable {
 
         public Builder endDate(Calendar end) {
             this.endDate = end;
-            return this;
-        }
-
-        public Builder host(long host) {
-            this.hostId = host;
             return this;
         }
 
@@ -249,14 +247,17 @@ public class Event implements Serializable {
             this.supplier = sup;
             return this;
         }
-        public Builder guestOfHonour(List<GuestOfHonour> guest){
-            this.guestOfHonour=guest;
+
+        public Builder guestOfHonour(List<GuestOfHonour> guest) {
+            this.guestOfHonour = guest;
             return this;
         }
-        public Builder stats(Statistics stats){
-            this.stats=stats;
+
+        public Builder stats(Statistics stats) {
+            this.stats = stats;
             return this;
         }
+
         public Event build() {
             return new Event(this);
         }
@@ -267,14 +268,17 @@ public class Event implements Serializable {
             this.startDate = ev.startDate;
             this.eventName = ev.eventName;
             this.eventType = ev.eventType;
-            this.hostId = ev.eventId;
             this.refundRate = ev.refundRate;
             this.refundable = ev.refundable;
             this.supplier = ev.supplier;
             this.staff = ev.staff;
             this.eventId = ev.eventId;
-            this.guestOfHonour=ev.guestOfHonour;
-            this.stats=ev.stats;
+            this.guestOfHonour = ev.guestOfHonour;
+            this.stats = ev.stats;
+            this.host = ev.host;
+            this.invitation = ev.invitation;
+            this.reminder = ev.reminder;
+            this.budget=ev.budget;
             return this;
 
         }
@@ -284,9 +288,7 @@ public class Event implements Serializable {
         return eventId;
     }
 
-    public void setId(Long eventId) {
-        this.eventId = eventId;
-    }
+  
 
     @Override
     public int hashCode() {

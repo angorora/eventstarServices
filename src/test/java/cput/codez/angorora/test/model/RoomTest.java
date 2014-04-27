@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package cput.codez.angorora.test.model;
-import cput.codez.angorora.eventstar.model.User;
+
+import cput.codez.angorora.eventstar.model.Room;
 import org.testng.Assert;
 import static org.testng.Assert.*;
 import org.testng.annotations.AfterClass;
@@ -18,25 +18,29 @@ import org.testng.annotations.Test;
  *
  * @author marc
  */
-public class UserTest {
-    private User user;
-    private User newuser;
-    public UserTest() {
+public class RoomTest {
+
+    Room room;
+    Room newRoom;
+
+    public RoomTest() {
     }
 
     // TODO add test methods here.
     // The methods must be annotated with annotation @Test. For example:
     //
-     @Test
-     public void testCreate() {
-            user= new User.Builder("Allen").userpass("34341991").userId(212199587).build();
-            Assert.assertEquals(user.getUsername(), "Allen");
-     }
-     @Test(dependsOnMethods = "testCreate")
-     public void testUpdate(){
-           newuser= new User.Builder("Allen").copier(user).userpass("34321991").build();
-           Assert.assertEquals(newuser.getPassword(), "34321991");
-     }
+    @Test
+    public void testCreation() {
+        room = new Room.Builder(123).roomName("Dromedaris").build();
+        Assert.assertEquals(room.getCapacity(), 123);
+    }
+
+    @Test
+    public void testUpdate() {
+        newRoom = new Room.Builder(123).copier(room).roomName("MPH").build();
+        Assert.assertEquals(newRoom.getRoomName(), "MPH");
+    }
+
     @BeforeClass
     public static void setUpClass() throws Exception {
     }
@@ -52,7 +56,4 @@ public class UserTest {
     @AfterMethod
     public void tearDownMethod() throws Exception {
     }
-
-    
-    
 }

@@ -6,6 +6,7 @@
 package cput.codez.angorora.eventstar.model;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -22,40 +23,25 @@ public class User implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long userId;
+    @Column(unique = true)
     private String username;
     private String password;
 
-   private User() {
+    private User() {
     }
 
-   private User(Builder build) {
+    private User(Builder build) {
         this.username = build.username;
         this.password = build.password;
         this.userId = build.userId;
-    }
-
-    public Long getUserId() {
-        return userId;
-    }
-
-    public void setUserId(Long userId) {
-        this.userId = userId;
     }
 
     public String getUsername() {
         return username;
     }
 
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
     public String getPassword() {
         return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
     }
 
     public static class Builder {
@@ -68,7 +54,7 @@ public class User implements Serializable {
             this.username = username;
         }
 
-        public Builder user(String pass) {
+        public Builder userpass(String pass) {
             this.password = pass;
             return this;
         }
@@ -92,10 +78,6 @@ public class User implements Serializable {
 
     public Long getId() {
         return userId;
-    }
-
-    public void setId(Long userId) {
-        this.userId = userId;
     }
 
     @Override

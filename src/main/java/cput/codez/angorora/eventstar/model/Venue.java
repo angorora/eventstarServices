@@ -7,6 +7,8 @@ package cput.codez.angorora.eventstar.model;
 
 import java.io.Serializable;
 import java.util.List;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,11 +28,12 @@ public class Venue implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long venueId;
+    @Column(unique=true)
     private String venueName;
     @Embedded
     private Address address;
-    @OneToMany
-    @JoinColumn(name = "venueId")
+    @OneToMany(cascade=CascadeType.ALL)
+    @JoinColumn(name="venueId")
     private List<Room> roomid;
     private long capacity;
 

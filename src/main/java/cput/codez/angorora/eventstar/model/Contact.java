@@ -12,17 +12,17 @@ import javax.persistence.Embeddable;
  * @author marc
  */
 @Embeddable
-class Contact {
+public class Contact {
 
     private String telno;
     private String cellNo;
     private String email;
     private String webaddress;
 
-    public Contact() {
+   private Contact() {
     }
 
-    public Contact(Builder build) {
+    private Contact(Builder build) {
         this.cellNo = build.cellNo;
         this.email = build.email;
         this.telno = build.telno;

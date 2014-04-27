@@ -27,7 +27,8 @@ public class UserRepo {
     public static ApplicationContext ctx;
     private Long id;
     User user;
-    private UserRepository repo;
+    User newUser;
+    static  UserRepository repo;
 
     public UserRepo() {
     }
@@ -37,20 +38,54 @@ public class UserRepo {
     //
     @Test
     public void createUser() {
-         repo = ctx.getBean(UserRepository.class);
-           user= new User.Builder("Allen").user("34341991").userId(212199587).build();
-            Assert.assertEquals(user.getUsername(), "Allen");
-            repo.save(user);
-             id = user.getId();
-         Assert.assertNotNull(user);
+        repo = ctx.getBean(UserRepository.class);
+        user = new User.Builder("Allen")
+                .userpass("34341991")
+                .build();
+        Assert.assertEquals(user.getUsername(), "Allen");
+        repo.save(user);
+        id = user.getId();
+        Assert.assertNotNull(user);
     }
+
+    @Test(dependsOnMethods = "createUser")
+    public void readTest() {
+        repo = ctx.getBean(UserRepository.class);
+        user = repo.findOne(id);
+        Assert.assertEquals(user.getUsername(), "Allen");
+    }
+
+    @Test(dependsOnMethods = "readTest")
+    public void updateTest() {
+        repo = ctx.getBean(UserRepository.class);
+        User user = repo.findOne(id);
+        newUser = new User.Builder("Allen")
+                .copier(user)
+                .userpass("34301991")
+                .build();
+        repo.save(newUser);
+        newUser = repo.findOne(id);
+        Assert.assertEquals(newUser.getPassword(), "34301991");
+
+    }
+
+    @Test(dependsOnMethods = "updateTest")
+    public void deleteUser() {
+         repo = ctx.getBean(UserRepository.class);
+         repo.delete(id);
+         User deletedUser = repo.findOne(id);
+         Assert.assertNull(deletedUser);
+    }
+
     @BeforeClass
     public static void setUpClass() throws Exception {
-         ctx = new AnnotationConfigApplicationContext(ConnectionConfig.class);
+        ctx = new AnnotationConfigApplicationContext(ConnectionConfig.class);
     }
 
     @AfterClass
     public static void tearDownClass() throws Exception {
+        repo = ctx.getBean(UserRepository.class);
+        repo.deleteAll();
     }
 
     @BeforeMethod
@@ -59,5 +94,6 @@ public class UserRepo {
 
     @AfterMethod
     public void tearDownMethod() throws Exception {
+       
     }
 }

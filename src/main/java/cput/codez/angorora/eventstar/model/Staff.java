@@ -23,7 +23,7 @@ public class Staff implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long staffid;
-    private long eventId;
+    //private long eventId;
     private String staffName;
     private String staffSurname;
     private String role;
@@ -39,57 +39,43 @@ public class Staff implements Serializable {
         this.staffid = build.staffid;
         this.role = build.role;
         this.contact = build.contact;
-        this.eventId = build.eventId;
+       // this.eventId = build.eventId;
     }
 
     public Long getStaffid() {
         return staffid;
     }
 
-    public void setStaffid(Long staffid) {
-        this.staffid = staffid;
-    }
+   
+//
+//    public long getEventId() {
+//        return eventId;
+//    }
 
-    public long getEventId() {
-        return eventId;
-    }
-
-    public void setEventId(long eventId) {
-        this.eventId = eventId;
-    }
-
+  
     public String getStaffName() {
         return staffName;
     }
 
-    public void setStaffName(String staffName) {
-        this.staffName = staffName;
-    }
+  
 
     public String getStaffSurname() {
         return staffSurname;
     }
 
-    public void setStaffSurname(String staffSurname) {
-        this.staffSurname = staffSurname;
-    }
+    
 
     public String getRole() {
         return role;
     }
 
-    public void setRole(String role) {
-        this.role = role;
-    }
+   
 
     public Contact getContact() {
         return contact;
     }
 
-    public void setContact(Contact contact) {
-        this.contact = contact;
-    }
-
+   
     public static class Builder {
 
         private Long staffid;
@@ -104,10 +90,10 @@ public class Staff implements Serializable {
             this.staffName = name;
         }
 
-        public Builder eventId(long eventId) {
-            this.eventId = eventId;
-            return this;
-        }
+//        public Builder eventId(long eventId) {
+//            this.eventId = eventId;
+//            return this;
+//        }
 
         public Builder surname(String surname) {
             this.staffSurname = surname;
@@ -134,7 +120,7 @@ public class Staff implements Serializable {
             this.staffid = staff.staffid;
             this.role = staff.role;
             this.contact = staff.contact;
-            this.eventId = staff.eventId;
+           // this.eventId = staff.eventId;
             return this;
         }
     }

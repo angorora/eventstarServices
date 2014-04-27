@@ -28,10 +28,10 @@ public class Supplier implements Serializable {
     private Contact contact;
     private String suppliedService;
 
-    public Supplier() {
+    private Supplier() {
     }
 
-    public Supplier(Builder build) {
+    private Supplier(Builder build) {
         this.contact=build.contact;
         this.suppliedService=build.suppliedService;
         this.supplierId=build.supplierId;

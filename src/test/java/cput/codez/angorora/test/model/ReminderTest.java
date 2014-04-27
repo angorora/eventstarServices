@@ -5,7 +5,11 @@
  */
 
 package cput.codez.angorora.test.model;
-import cput.codez.angorora.eventstar.model.User;
+
+import cput.codez.angorora.eventstar.model.Reminder;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import org.testng.Assert;
 import static org.testng.Assert.*;
 import org.testng.annotations.AfterClass;
@@ -18,24 +22,29 @@ import org.testng.annotations.Test;
  *
  * @author marc
  */
-public class UserTest {
-    private User user;
-    private User newuser;
-    public UserTest() {
+public class ReminderTest {
+    private Reminder reminder;
+    private Reminder newReminder;
+  Calendar calendar = new GregorianCalendar();
+    public ReminderTest() {
     }
 
     // TODO add test methods here.
     // The methods must be annotated with annotation @Test. For example:
     //
      @Test
-     public void testCreate() {
-            user= new User.Builder("Allen").userpass("34341991").userId(212199587).build();
-            Assert.assertEquals(user.getUsername(), "Allen");
+     public void testCreation() {
+         calendar.set(2014, 04, 30, 18, 30);
+         reminder=new Reminder.Builder("On the 26 of May you are going to have a Holiday")
+                 .activeDate(calendar)
+                 .build();
      }
-     @Test(dependsOnMethods = "testCreate")
-     public void testUpdate(){
-           newuser= new User.Builder("Allen").copier(user).userpass("34321991").build();
-           Assert.assertEquals(newuser.getPassword(), "34321991");
+     @Test
+     public void tetsUpdate(){
+         newReminder= new Reminder.Builder("On the 1st of May you are going to have a Holiday")
+                 .activeDate(calendar)
+                 .build();
+         Assert.assertEquals(newReminder.getMessage(), "On the 1st of May you are going to have a Holiday");
      }
     @BeforeClass
     public static void setUpClass() throws Exception {
@@ -52,7 +61,4 @@ public class UserTest {
     @AfterMethod
     public void tearDownMethod() throws Exception {
     }
-
-    
-    
 }

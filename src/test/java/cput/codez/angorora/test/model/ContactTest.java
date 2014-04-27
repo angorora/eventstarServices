@@ -5,7 +5,8 @@
  */
 
 package cput.codez.angorora.test.model;
-import cput.codez.angorora.eventstar.model.User;
+
+import cput.codez.angorora.eventstar.model.Contact;
 import org.testng.Assert;
 import static org.testng.Assert.*;
 import org.testng.annotations.AfterClass;
@@ -18,25 +19,25 @@ import org.testng.annotations.Test;
  *
  * @author marc
  */
-public class UserTest {
-    private User user;
-    private User newuser;
-    public UserTest() {
+public class ContactTest {
+    Contact contact;
+    Contact newContact;
+    public ContactTest() {
     }
 
     // TODO add test methods here.
     // The methods must be annotated with annotation @Test. For example:
     //
      @Test
-     public void testCreate() {
-            user= new User.Builder("Allen").userpass("34341991").userId(212199587).build();
-            Assert.assertEquals(user.getUsername(), "Allen");
+     public void testCreation() {
+         contact=new Contact.Builder("0840472266").email("allen.ngorora@gmail.com").telno(null).webaddress(null).build();
+         Assert.assertEquals(contact.getCellNo(), "0840472266");
      }
-     @Test(dependsOnMethods = "testCreate")
-     public void testUpdate(){
-           newuser= new User.Builder("Allen").copier(user).userpass("34321991").build();
-           Assert.assertEquals(newuser.getPassword(), "34321991");
-     }
+@Test
+public void testUpdate(){
+    newContact=new Contact.Builder("0840472266").telno("02068242").build();
+    Assert.assertEquals(newContact.getTelno(), "02068242");
+}
     @BeforeClass
     public static void setUpClass() throws Exception {
     }
@@ -52,7 +53,4 @@ public class UserTest {
     @AfterMethod
     public void tearDownMethod() throws Exception {
     }
-
-    
-    
 }

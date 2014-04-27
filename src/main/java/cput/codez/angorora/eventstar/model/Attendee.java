@@ -6,15 +6,12 @@
 package cput.codez.angorora.eventstar.model;
 
 import java.io.Serializable;
-import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 /**
@@ -28,25 +25,20 @@ public class Attendee implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long attendeeId;
-    private long eventId;
     private String firstName;
     private String lastName;
     private String gender;
     @Embedded
     private Contact contact;
-    @OneToOne(cascade=CascadeType.ALL)
-    @JoinColumn(name = "attendeeId" )
-    private Payment pay;
     private int age;
     private String companyName;
     private String diet;
+    @OneToOne
+    @JoinColumn(name="attendeeId")
+    private Payment payment;
 
     public Long getId() {
         return attendeeId;
-    }
-
-    public void setId(Long attendeeId) {
-        this.attendeeId = attendeeId;
     }
 
     private Attendee() {
@@ -58,107 +50,58 @@ public class Attendee implements Serializable {
         this.lastName = build.lastName;
         this.gender = build.gender;
         this.attendeeId = build.attendeeId;
-        this.pay = build.pay;
         this.diet = build.diet;
         this.age = build.age;
-        this.eventId=build.eventId;
+        this.payment = build.payment;
     }
 
     public Long getAttendeeId() {
         return attendeeId;
     }
 
-    public long getEventId() {
-        return eventId;
-    }
-
-    public void setEventId(long eventId) {
-        this.eventId = eventId;
-    }
-
-    public void setAttendeeId(Long attendeeId) {
-        this.attendeeId = attendeeId;
-    }
-
     public String getFirstName() {
         return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
     }
 
     public String getLastName() {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
-
     public String getGender() {
         return gender;
-    }
-
-    public void setGender(String gender) {
-        this.gender = gender;
     }
 
     public Contact getContact() {
         return contact;
     }
 
-    public void setContact(Contact contact) {
-        this.contact = contact;
-    }
-
-    public Payment getPay() {
-        return pay;
-    }
-
-    public void setPay(Payment pay) {
-        this.pay = pay;
-    }
-
     public int getAge() {
         return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
     }
 
     public String getCompanyName() {
         return companyName;
     }
 
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName;
+    public Payment getPayment() {
+        return payment;
     }
 
     public String getDiet() {
         return diet;
     }
 
-    public void setDiet(String diet) {
-        this.diet = diet;
-    }
-
     public static class Builder {
 
         private Long attendeeId;
-        private long eventId;
         private String firstName;
         private String lastName;
         private String gender;
-        @Embedded
         private Contact contact;
-        @OneToMany
-        @JoinColumn(name = "attendeeId")
-        private Payment pay;
         private int age;
         private String companyName;
         private String diet;
+        private Payment payment;
 
         public Builder(Contact cont) {
             this.contact = cont;
@@ -166,6 +109,11 @@ public class Attendee implements Serializable {
 
         public Builder attendeeId(long attId) {
             this.attendeeId = attId;
+            return this;
+        }
+
+        public Builder payment(Payment pay) {
+            this.payment = pay;
             return this;
         }
 
@@ -178,10 +126,7 @@ public class Attendee implements Serializable {
             this.lastName = lname;
             return this;
         }
-        public Builder eventId(long evId){
-            this.eventId=evId;
-            return this;
-        }
+
         public Builder gender(String gender) {
             this.gender = gender;
             return this;
@@ -194,11 +139,6 @@ public class Attendee implements Serializable {
 
         public Builder age(int age) {
             this.age = age;
-            return this;
-        }
-
-        public Builder pay(Payment pay) {
-            this.pay = pay;
             return this;
         }
 
@@ -219,8 +159,7 @@ public class Attendee implements Serializable {
             this.diet = att.diet;
             this.firstName = att.firstName;
             this.gender = att.gender;
-            this.pay = att.pay;
-            this.eventId=att.eventId;
+            this.payment=att.payment;
             return this;
         }
     }
