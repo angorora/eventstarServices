@@ -27,14 +27,14 @@ public class Attendee implements Serializable {
     private Long attendeeId;
     private String firstName;
     private String lastName;
+    private String ID;
     private String gender;
-    @Embedded
-    private Contact contact;
     private int age;
     private String companyName;
     private String diet;
-    @OneToOne
-    @JoinColumn(name="attendeeId")
+    @Embedded
+    private Contact contact;
+    @Embedded
     private Payment payment;
 
     public Long getId() {
@@ -53,6 +53,8 @@ public class Attendee implements Serializable {
         this.diet = build.diet;
         this.age = build.age;
         this.payment = build.payment;
+        this.companyName=build.companyName;
+        this.ID=build.ID;
     }
 
     public Long getAttendeeId() {
@@ -83,6 +85,10 @@ public class Attendee implements Serializable {
         return companyName;
     }
 
+    public String getID() {
+        return ID;
+    }
+
     public Payment getPayment() {
         return payment;
     }
@@ -102,6 +108,7 @@ public class Attendee implements Serializable {
         private String companyName;
         private String diet;
         private Payment payment;
+        private String ID;
 
         public Builder(Contact cont) {
             this.contact = cont;
@@ -116,7 +123,10 @@ public class Attendee implements Serializable {
             this.payment = pay;
             return this;
         }
-
+public Builder ID(String id){
+    this.ID=id;
+    return this;
+}
         public Builder firstName(String fname) {
             this.firstName = fname;
             return this;
@@ -159,7 +169,8 @@ public class Attendee implements Serializable {
             this.diet = att.diet;
             this.firstName = att.firstName;
             this.gender = att.gender;
-            this.payment=att.payment;
+            this.payment = att.payment;
+            this.ID=att.ID;
             return this;
         }
     }

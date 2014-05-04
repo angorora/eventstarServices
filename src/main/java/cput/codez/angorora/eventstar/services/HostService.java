@@ -4,16 +4,15 @@
  * and open the template in the editor.
  */
 
-package cput.codez.angorora.eventstar.repository;
+package cput.codez.angorora.eventstar.services;
 
 import cput.codez.angorora.eventstar.model.Event;
-import cput.codez.angorora.eventstar.model.Payment;
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
 
 /**
  *
  * @author marc
  */
-public interface PaymentRepository extends JpaRepository<Payment,Long>{
-    
+public interface HostService {
+    public List<Event> getEventsForHost(String hostName);
 }

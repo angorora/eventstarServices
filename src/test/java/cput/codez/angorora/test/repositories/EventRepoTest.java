@@ -6,24 +6,24 @@
 package cput.codez.angorora.test.repositories;
 
 import cput.codez.angorora.eventstar.app.conf.ConnectionConfig;
+import cput.codez.angorora.eventstar.model.Address;
 import cput.codez.angorora.eventstar.model.Attendee;
 import cput.codez.angorora.eventstar.model.Budget;
 import cput.codez.angorora.eventstar.model.Contact;
 import cput.codez.angorora.eventstar.model.Event;
 import cput.codez.angorora.eventstar.model.GuestOfHonour;
-import cput.codez.angorora.eventstar.model.Host;
 import cput.codez.angorora.eventstar.model.Invitation;
+import cput.codez.angorora.eventstar.model.Payment;
+import cput.codez.angorora.eventstar.model.Refund;
 import cput.codez.angorora.eventstar.model.Reminder;
 import cput.codez.angorora.eventstar.model.Staff;
 import cput.codez.angorora.eventstar.model.Statistics;
 import cput.codez.angorora.eventstar.model.Supplier;
 import cput.codez.angorora.eventstar.repository.AttendeeRepository;
-import cput.codez.angorora.eventstar.repository.BudgetRepository;
 import cput.codez.angorora.eventstar.repository.EventRepository;
 import cput.codez.angorora.eventstar.repository.GuestOfHonourRepository;
-import cput.codez.angorora.eventstar.repository.HostRepository;
+import cput.codez.angorora.eventstar.repository.RefundRepository;
 import cput.codez.angorora.eventstar.repository.StaffRepository;
-import cput.codez.angorora.eventstar.repository.StatisticsRepository;
 import cput.codez.angorora.eventstar.repository.SupplierRepository;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -31,8 +31,6 @@ import java.util.GregorianCalendar;
 import java.util.List;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.AnnotationConfigApplicationContext;
-import org.testng.Assert;
-import static org.testng.Assert.*;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeClass;
@@ -45,35 +43,32 @@ import org.testng.annotations.Test;
  */
 public class EventRepoTest {
 
-    private List<Staff> staffList = new ArrayList<>();
-    private List<Attendee> attList = new ArrayList<>();
-    private List<Supplier> supplierList = new ArrayList<>();
-    private List<GuestOfHonour> guestOfHonourList = new ArrayList<>();
-    private Statistics statistics;
-    private Host host;
+    private List<Staff> staffList=new ArrayList<>();
+    private List<Attendee> attList=new ArrayList<>();
+    private List<Supplier> supplierList=new ArrayList<>();
+    private List<Refund> refundList=new ArrayList<>();
+    private List<GuestOfHonour> guestOfHonourList=new ArrayList<>();
+    private Statistics stats;
+    private Budget budget;
     private Reminder reminder;
     private Invitation invitation;
     private Staff staff;
-    private Attendee attendee;
-    private Supplier supplier;
-    private Budget budget;
-    private GuestOfHonour guest;
+    private Attendee att;
     private Contact contact;
+    private Address address;
+    private Supplier supplier;
+    private Refund refund;
+    private GuestOfHonour guestOfHonour;
     private Event event;
-    private Event newEvent;
-    public static ApplicationContext ctx;
-    public static EventRepository evRepo;
-    public static AttendeeRepository attRepo;
-    public static SupplierRepository supRepo;
+    private Payment payment;
+    private Calendar calendar = new GregorianCalendar();
+    private static EventRepository evRepo;
     private static StaffRepository staffRepo;
-    private static BudgetRepository budgetRepo;
-    private static HostRepository hostRepo;
+    private static SupplierRepository supRepo;
+    private static RefundRepository refundRepo;
     private static GuestOfHonourRepository guestRepo;
-    private static StatisticsRepository statsRepo;
-    private long id;
-    private long evid;
-    private long bid;
-    Calendar calendar = new GregorianCalendar();
+    private static AttendeeRepository attRepo;
+    private static ApplicationContext ctx;
 
     public EventRepoTest() {
     }
@@ -82,161 +77,111 @@ public class EventRepoTest {
     // The methods must be annotated with annotation @Test. For example:
     //
     @Test
-    public void eventObjectStage1() {
-        attRepo = ctx.getBean(AttendeeRepository.class);
-        statsRepo = ctx.getBean(StatisticsRepository.class);
+    public void objectCreation() {
+        refundRepo=ctx.getBean(RefundRepository.class);
+        staffRepo=ctx.getBean(StaffRepository.class);
+        supRepo=ctx.getBean(SupplierRepository.class);
+        guestRepo=ctx.getBean(GuestOfHonourRepository.class);
+        attRepo=ctx.getBean(AttendeeRepository.class);
+        
+        calendar.set(2014, 10, 12, 8, 00);
+        payment=new Payment.Builder(300).build();
         contact = new Contact.Builder("0840472266")
-                .email("allen.ngorora@gmail.com")
-                .telno(null)
-                .webaddress(null)
+                .email("allen.ngoroa@gmail.com")
+                .telno("02068242")
+                .webaddress("info@africa.org")
                 .build();
-        attendee = new Attendee.Builder(contact)
-                .age(19)
-                .company(null)
-                .diet("Vegaterian")
-                .firstName("Allen")
-                .lastName("Ngorora")
-                .gender("M")
+        stats = new Statistics.Builder(5)
+                .attendees(100)
+                .males(60)
+                .females(70)
                 .build();
-        attRepo.save(attendee);
-        statistics = new Statistics.Builder(20)
-                .attendees(500)
-                .males(100)
-                .females(400)
+        budget = new Budget.Builder(1000)
+                .audioVisualCost(500)
+                .decor(200)
+                .foodCost(1000)
+                .marketingCost(5000)
+                .photo(3000)
+                .security(1000)
+                .speaker(3000)
+                .staffCost(10000)
+                .transport(1000)
                 .build();
-//        statsRepo.save(statistics);
-        host = new Host.Builder("Microsoft")
-                .contact(contact)
-                .build();
-    }
-
-    @Test(dependsOnMethods = "eventObjectStage1")
-    public void eventObjectStage2() {
-        staffRepo = ctx.getBean(StaffRepository.class);
-        supRepo = ctx.getBean(SupplierRepository.class);
-        guestRepo = ctx.getBean(GuestOfHonourRepository.class);
-        staff = new Staff.Builder("Allen")
-                .surname("Ngcxumza")
-                .contact(contact)
-                .build();
-        staffRepo.save(staff);
-        supplier = new Supplier.Builder("KFC")
-                .supService("Food")
-                .contact(contact)
-                .build();
-        supRepo.save(supplier);
-        calendar.set(2014, 04, 30, 18, 30);
-        reminder = new Reminder.Builder("On the 26 of May you are going to have a Holiday")
+        reminder = new Reminder.Builder("Yo have an Event to attend tommorow ")
                 .activeDate(calendar)
                 .build();
-        invitation = new Invitation.Builder("You are invited to attend the Launch of the new Toyota Corolla")
+        invitation = new Invitation.Builder("You are cordialyy invited to the CPUT Annual General Conference")
                 .issueDate(calendar)
                 .build();
-        guest = new GuestOfHonour.Builder("Dr B")
+        staff = new Staff.Builder("Allen")
+                .surname("Ngorora")
+                .role("IT guy")
+                .contact(contact)
+                .build();
+        att = new Attendee.Builder(contact)
+                .age(10)
+                .company("Microsoft")
+                .diet("Vegetarian")
+                .firstName("Tonata")
+                .lastName("Nakashololo")
+                .gender("M")
+                .payment(payment)
+                .build();
+        supplier = new Supplier.Builder("MacDonald's")
+                .contact(contact)
+                .supService("Food")
+                .build();
+        refund = new Refund.Builder(1)
+                .accountNumber("1073326543")
+                .bankName("Nedbank")
+                .branchCode("1165")
+                .amount(400)
+                .dateOfRefund(calendar)
+                .build();
+        guestOfHonour = new GuestOfHonour.Builder("Sir Boniface")
+                .contact(contact)
                 .surname("Kabaso")
-                .guestInfo("Graduated with 10 Cum Laudes in all his 10 degrees")
+                .guestInfo("Iri ndo DHARA manje ir usadherere")
                 .build();
-        //guestRepo.save(guest);--NB:Though this is not an Embeddible, because there is a CASCADE.ALL in the parent class you wont persist
-        //it seperately
-    }
-
-    @Test(dependsOnMethods = "eventObjectStage2")
-    public void eventObjectStage3() {
-        budgetRepo = ctx.getBean(BudgetRepository.class);
-        budget = new Budget.Builder(3)
-                .audioVisualCost(100)
-                .decor(300)
-                .foodCost(500)
-                .marketingCost(300)
-                .photo(600)
-                .security(200)
-                .speaker(600)
-                .staffCost(2000)
-                .transport(500)
-                .build();
-        //budgetRepo.save(budget);
         staffList.add(staff);
-        attList.add(attendee);
+        attList.add(att);
         supplierList.add(supplier);
-        guestOfHonourList.add(guest);
-    }
+        refundList.add(refund);
+        guestOfHonourList.add(guestOfHonour);
+        attRepo.save(att);
+        //guestRepo.save(guestOfHonour);
+        supRepo.save(supplier);
+        staffRepo.save(staff);
+       }
 
-    @Test(dependsOnMethods = "eventObjectStage3")
-    public void tesCreation() {
-        evRepo = ctx.getBean(EventRepository.class);
-
-        event = new Event.Builder("Techdays")
-                .eventType("Conference")
-                .price(450)
-                .refundable("N")
-                .refundrate(0)
-                .startDate(calendar)
+    @Test(dependsOnMethods = "objectCreation")
+    public void testCreation() {
+        evRepo= ctx.getBean(EventRepository.class);
+        event=new Event.Builder("Techdays")
                 .attendee(attList)
+                .budget(budget)
+                .endDate(calendar)
+                .eventType("Conference")
                 .guestOfHonour(guestOfHonourList)
                 .invitation(invitation)
+                .price(500)
+                .refundable("Y").refundrate(10)
                 .reminder(reminder)
                 .staff(staffList)
-                .host(host)
-                .budget(budget)
+                .startDate(calendar)
+                .stats(stats)
                 .supplier(supplierList)
                 .build();
         evRepo.save(event);
-        evid = event.getId();
-        id = event.getGuestOfHonour().get(0).getId();
-        GuestOfHonour guest = guestRepo.findOne(id);
-        Assert.assertEquals(guest.getGuestName(), "Dr B");
     }
 
-   
-
-    @Test(dependsOnMethods = "tesCreation")
-    public void testUpdate() {
-        evRepo = ctx.getBean(EventRepository.class);
-        Event eventOriginal = evRepo.findOne(evid);
-        Event updated = new Event.Builder("TechDays")
-                .copier(eventOriginal)
-                .price(200)
-                .build();
-        evRepo.save(updated);
-        evid = updated.getId();
-        updated = evRepo.findOne(evid);
-        Assert.assertEquals(updated.getPrice(), 200, 0.01);
-    }
- @Test(dependsOnMethods = "testUpdate")
-    public void testDelete() {
-         budgetRepo = ctx.getBean(BudgetRepository.class);
-         bid=event.getBudget().getId();
-         budgetRepo.delete(bid);
-         Budget budget=budgetRepo.findOne(bid);
-        Assert.assertNull(budget);
-        
-    }
     @BeforeClass
     public static void setUpClass() throws Exception {
-        ctx = new AnnotationConfigApplicationContext(ConnectionConfig.class);
-
+         ctx = new AnnotationConfigApplicationContext(ConnectionConfig.class);
     }
 
     @AfterClass
     public static void tearDownClass() throws Exception {
-        attRepo = ctx.getBean(AttendeeRepository.class);
-        statsRepo = ctx.getBean(StatisticsRepository.class);
-        budgetRepo = ctx.getBean(BudgetRepository.class);
-        evRepo = ctx.getBean(EventRepository.class);
-        staffRepo = ctx.getBean(StaffRepository.class);
-        supRepo = ctx.getBean(SupplierRepository.class);
-        hostRepo = ctx.getBean(HostRepository.class);
-        guestRepo = ctx.getBean(GuestOfHonourRepository.class);
-
-        guestRepo.deleteAll();
-        hostRepo.deleteAll();
-        attRepo.deleteAll();
-        attRepo.deleteAll();
-        staffRepo.deleteAll();
-        statsRepo.deleteAll();
-        budgetRepo.deleteAll();
-
-        evRepo.deleteAll();
     }
 
     @BeforeMethod

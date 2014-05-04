@@ -4,16 +4,15 @@
  * and open the template in the editor.
  */
 
-package cput.codez.angorora.eventstar.repository;
+package cput.codez.angorora.eventstar.services;
 
 import cput.codez.angorora.eventstar.model.Event;
-import cput.codez.angorora.eventstar.model.Room;
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.List;
 
 /**
  *
  * @author marc
  */
-public interface RoomRepository extends JpaRepository<Room,Long>{
-    
+public interface ReassignStaffService {
+    public Event getAssignedStaff(List<String> staff,String eventName);
 }

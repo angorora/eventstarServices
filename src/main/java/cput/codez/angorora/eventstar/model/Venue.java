@@ -7,10 +7,10 @@ package cput.codez.angorora.eventstar.model;
 
 import java.io.Serializable;
 import java.util.List;
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -28,14 +28,15 @@ public class Venue implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long venueId;
-    @Column(unique=true)
+    @Column(unique = true)
     private String venueName;
     @Embedded
     private Address address;
-    @OneToMany(cascade=CascadeType.ALL)
-    @JoinColumn(name="venueId")
-    private List<Room> roomid;
-    private long capacity;
+    @Embedded
+    private Room room;
+    @OneToMany(fetch=FetchType.EAGER)
+    @JoinColumn(name = "venueId")
+    private List<Event> event;
 
     public Venue() {
     }
@@ -43,61 +44,38 @@ public class Venue implements Serializable {
     public Venue(Builder build) {
         this.venueId = build.venueId;
         this.address = build.address;
-        this.capacity = build.capacity;
         this.venueName = build.venueName;
-        this.roomid = build.roomid;
+        this.room = build.room;
+        this.event = build.event;
     }
 
     public Long getVenueId() {
         return venueId;
     }
 
-    public void setVenueId(Long venueId) {
-        this.venueId = venueId;
+    public List<Event> getEvent() {
+        return event;
     }
 
     public String getVenueName() {
         return venueName;
     }
 
-    public void setVenueName(String venueName) {
-        this.venueName = venueName;
-    }
-
     public Address getAddress() {
         return address;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
-    public List<Room> getRoomid() {
-        return roomid;
-    }
-
-    public void setRoomid(List<Room> roomid) {
-        this.roomid = roomid;
-    }
-
-    public long getCapacity() {
-        return capacity;
-    }
-
-    public void setCapacity(long capacity) {
-        this.capacity = capacity;
+    public Room getRoom() {
+        return room;
     }
 
     public static class Builder {
 
         private Long venueId;
         private String venueName;
-        @Embedded
         private Address address;
-        @OneToMany
-        @JoinColumn(name = "venueId")
-        private List<Room> roomid;
-        private long capacity;
+        private Room room;
+        private List<Event> event;
 
         public Builder(String venuename) {
             this.venueName = venuename;
@@ -108,18 +86,18 @@ public class Venue implements Serializable {
             return this;
         }
 
+        public Builder event(List<Event> event) {
+            this.event = event;
+            return this;
+        }
+
         public Builder address(Address addr) {
             this.address = addr;
             return this;
         }
 
-        public Builder room(List<Room> room) {
-            this.roomid = room;
-            return this;
-        }
-
-        public Builder capacity(long capacity) {
-            this.capacity = capacity;
+        public Builder room(Room room) {
+            this.room = room;
             return this;
         }
 
@@ -130,9 +108,9 @@ public class Venue implements Serializable {
         public Builder copier(Venue venue) {
             this.venueId = venue.venueId;
             this.address = venue.address;
-            this.capacity = venue.capacity;
             this.venueName = venue.venueName;
-            this.roomid = venue.roomid;
+            this.room = venue.room;
+            this.event=venue.event;
             return this;
         }
     }

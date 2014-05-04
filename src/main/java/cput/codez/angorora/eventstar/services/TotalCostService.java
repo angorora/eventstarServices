@@ -4,16 +4,14 @@
  * and open the template in the editor.
  */
 
-package cput.codez.angorora.eventstar.repository;
+package cput.codez.angorora.eventstar.services;
 
-import cput.codez.angorora.eventstar.model.Budget;
 import cput.codez.angorora.eventstar.model.Event;
-import org.springframework.data.jpa.repository.JpaRepository;
 
 /**
  *
  * @author marc
  */
-public interface BudgetRepository extends JpaRepository<Budget,Long>{
-    
+public interface TotalCostService {
+    public double getTotalCost(String eventName);
 }

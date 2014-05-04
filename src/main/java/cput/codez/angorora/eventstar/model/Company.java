@@ -24,7 +24,6 @@ public class Company implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(unique=true)
     private String companyName;
     @Embedded
     private Contact contact;

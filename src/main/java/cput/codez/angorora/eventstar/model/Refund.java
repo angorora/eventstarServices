@@ -27,7 +27,6 @@ public class Refund implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Column(unique = true)
     private long attendeeId;
     private double amount;
     @Temporal(TemporalType.DATE)

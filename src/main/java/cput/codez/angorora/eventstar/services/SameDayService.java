@@ -4,16 +4,16 @@
  * and open the template in the editor.
  */
 
-package cput.codez.angorora.eventstar.repository;
+package cput.codez.angorora.eventstar.services;
 
 import cput.codez.angorora.eventstar.model.Event;
-import cput.codez.angorora.eventstar.model.Statistics;
-import org.springframework.data.jpa.repository.JpaRepository;
+import java.util.Calendar;
+import java.util.List;
 
 /**
  *
  * @author marc
  */
-public interface StatisticsRepository extends JpaRepository<Statistics,Long>{
-    
+public interface SameDayService {
+    public List<Event> getConcurrentEvents(Calendar dt);
 }

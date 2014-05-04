@@ -38,7 +38,6 @@ public class EventTest {
     private List<Supplier> supplierList=new ArrayList<>();
     private List<GuestOfHonour> guestOfHonourList=new ArrayList<>();
     private Statistics statistics;
-    private Host host;
     private Reminder reminder;
     private Invitation invitation;
     private Staff staff;

@@ -9,15 +9,14 @@ import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 import javax.persistence.CascadeType;
-import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 
 /**
  *
@@ -30,7 +29,6 @@ public class Event implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long eventId;
-    @Column(unique = true)
     private String eventName;
     private String eventType;
     private Calendar startDate;
@@ -41,22 +39,21 @@ public class Event implements Serializable {
     @OneToMany
     @JoinColumn(name = "eventId")
     List<Staff> staff;
-    @OneToMany @JoinColumn(name = "eventId")
+    @OneToMany(fetch=FetchType.EAGER)
+    @JoinColumn(name = "eventId")
     List<Attendee> att;
-    @OneToMany
+   @OneToMany(fetch=FetchType.EAGER)
     @JoinColumn(name = "eventId")
     List<Supplier> supplier;
+    @OneToMany(fetch=FetchType.EAGER)
+    @JoinColumn(name = "eventId")
+    private List<Refund> refund;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "eventId")
     private List<GuestOfHonour> guestOfHonour;
-    @OneToOne
-    @JoinColumn(name = "eventId")
+    @Embedded()
     private Statistics stats;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "eventId")
-    private Host host;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "eventId")
+    @Embedded
     private Budget budget;
     @Embedded
     private Reminder reminder;
@@ -79,11 +76,11 @@ public class Event implements Serializable {
         this.eventId = build.eventId;
         this.guestOfHonour = build.guestOfHonour;
         this.stats = build.stats;
-        this.host = build.host;
         this.reminder = build.reminder;
         this.invitation = build.invitation;
         this.price = build.price;
         this.budget = build.budget;
+        this.refund=build.refund;
     }
 
     public Budget getBudget() {
@@ -114,8 +111,8 @@ public class Event implements Serializable {
         return price;
     }
 
-    public Host getHost() {
-        return host;
+    public List<Refund> getRefund() {
+        return refund;
     }
 
     public Reminder getReminder() {
@@ -169,10 +166,10 @@ public class Event implements Serializable {
         private List<GuestOfHonour> guestOfHonour;
         private Statistics stats;
         private Reminder reminder;
-        private Host host;
         private Invitation invitation;
         private Budget budget;
         private double price;
+        private List<Refund> refund;
 
         public Builder(String eventName) {
             this.eventName = eventName;
@@ -188,13 +185,13 @@ public class Event implements Serializable {
             return this;
         }
 
-        public Builder eventType(String eventType) {
-            this.eventType = eventType;
+        public Builder refund(List<Refund> ref) {
+            this.refund = ref;
             return this;
         }
 
-        public Builder host(Host host) {
-            this.host = host;
+        public Builder eventType(String eventType) {
+            this.eventType = eventType;
             return this;
         }
 
@@ -275,10 +272,10 @@ public class Event implements Serializable {
             this.eventId = ev.eventId;
             this.guestOfHonour = ev.guestOfHonour;
             this.stats = ev.stats;
-            this.host = ev.host;
             this.invitation = ev.invitation;
             this.reminder = ev.reminder;
-            this.budget=ev.budget;
+            this.budget = ev.budget;
+            this.refund=ev.refund;
             return this;
 
         }
@@ -287,8 +284,6 @@ public class Event implements Serializable {
     public Long getId() {
         return eventId;
     }
-
-  
 
     @Override
     public int hashCode() {
